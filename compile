@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+set -e
+
+cd ~/src/emsdk-portable/
+source emsdk_env.sh
+cd -
+
+emcc -g4 hello.c
+clang -gdwarf-4 goodbye.c hello.c
+
+dwarfdump a.out.dSYM/Contents/Resources/DWARF/a.out > dump
+otool -l a.out.dSYM/Contents/Resources/DWARF/a.out > sections
+
+echo
+echo
+echo
+./test.py a.out.dSYM/Contents/Resources/DWARF/a.out
